@@ -1,5 +1,5 @@
-import 'package:rick_and_morty/data/models/location.dart';
-import 'package:rick_and_morty/domain/entities/character.dart';
+import 'package:rick_and_morty/feature/data/models/location.dart';
+import 'package:rick_and_morty/feature/domain/entities/character.dart';
 
 class Character extends CharacterEntity {
   Character(

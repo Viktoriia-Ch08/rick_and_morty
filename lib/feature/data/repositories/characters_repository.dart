@@ -2,11 +2,11 @@ import 'package:dartz/dartz.dart';
 import 'package:rick_and_morty/core/error/exception.dart';
 import 'package:rick_and_morty/core/error/failure.dart';
 import 'package:rick_and_morty/core/platform/network.dart';
-import 'package:rick_and_morty/data/datasources/characters_local_source.dart';
-import 'package:rick_and_morty/data/datasources/characters_remote_source.dart';
-import 'package:rick_and_morty/data/models/character.dart';
-import 'package:rick_and_morty/domain/entities/character.dart';
-import 'package:rick_and_morty/domain/repositories/character_rep.dart';
+import 'package:rick_and_morty/feature/data/datasources/characters_local_source.dart';
+import 'package:rick_and_morty/feature/data/datasources/characters_remote_source.dart';
+import 'package:rick_and_morty/feature/data/models/character.dart';
+import 'package:rick_and_morty/feature/domain/entities/character.dart';
+import 'package:rick_and_morty/feature/domain/repositories/character_rep.dart';
 
 class CharactersRepository implements CharacterRep {
   final CharactersRemoteSource remoteSource;

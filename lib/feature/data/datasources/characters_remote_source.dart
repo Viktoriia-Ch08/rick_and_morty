@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:rick_and_morty/core/error/exception.dart';
-import 'package:rick_and_morty/data/models/character.dart';
+import 'package:rick_and_morty/feature/data/models/character.dart';
 import 'package:http/http.dart' as http;
 
 abstract class CharactersRemoteSource {

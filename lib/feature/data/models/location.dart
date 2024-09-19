@@ -1,4 +1,4 @@
-import 'package:rick_and_morty/domain/entities/location.dart';
+import 'package:rick_and_morty/feature/domain/entities/location.dart';
 
 class Location extends LocationEntity {
   Location({required name, required url}) : super(name: name, url: url);
