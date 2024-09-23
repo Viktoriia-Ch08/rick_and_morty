@@ -10,7 +10,7 @@ class CharacterEntity extends Equatable {
   final LocationEntity origin;
   final LocationEntity location;
   final String image;
-  // final Map<dynamic, String> episode;
+  final List<String> episode;
   final String url;
   final String created;
   final String status;
@@ -24,7 +24,7 @@ class CharacterEntity extends Equatable {
       required this.origin,
       required this.location,
       required this.image,
-      // required this.episode,
+      required this.episode,
       required this.url,
       required this.created,
       required this.status});
@@ -39,7 +39,7 @@ class CharacterEntity extends Equatable {
         origin,
         location,
         image,
-        // episode,
+        episode,
         url,
         created,
         status

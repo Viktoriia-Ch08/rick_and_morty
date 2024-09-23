@@ -12,7 +12,7 @@ class Character extends CharacterEntity {
       required origin,
       required location,
       required image,
-      // required episode,
+      required episode,
       required url,
       required created})
       : super(
@@ -25,7 +25,7 @@ class Character extends CharacterEntity {
           origin: origin,
           location: location,
           image: image,
-          // episode: episode,
+          episode: episode,
           url: url,
           created: created,
         );
@@ -44,7 +44,9 @@ class Character extends CharacterEntity {
             ? Location.fromJson(json['location'])
             : null,
         image: json['image'],
-        // episode: (json['episode'] as List<dynamic>).map((el) => el as String),
+        episode: ((json['episode'] ?? []) as List<dynamic>)
+            .map((el) => el as String)
+            .toList(),
         url: json['url'],
         created: json['created']);
   }
@@ -60,7 +62,7 @@ class Character extends CharacterEntity {
       'origin': Location(name: origin.name, url: origin.url).toJson(),
       'location': Location(name: location.name, url: location.url).toJson(),
       'image': image,
-      // 'episode': episode,
+      'episode': episode,
       'url': url,
       'created': created
     };

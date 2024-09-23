@@ -7,6 +7,7 @@ import 'package:rick_and_morty/feature/domain/entities/character.dart';
 import 'package:rick_and_morty/feature/presentation/bloc/cubit/fetch_characters_cubit.dart';
 import 'package:rick_and_morty/feature/presentation/bloc/cubit/fetch_characters_state.dart';
 import 'package:rick_and_morty/widgets/character_card.dart';
+import 'package:rick_and_morty/widgets/loader.dart';
 
 class GalleryList extends StatelessWidget {
   const GalleryList({
@@ -29,19 +30,11 @@ class GalleryList extends StatelessWidget {
       });
     }
 
-    Widget _loadIndicator() {
-      return const Center(
-        child: CircularProgressIndicator(
-          color: ColorsConstants.pinkColor,
-        ),
-      );
-    }
-
     return BlocBuilder<FetchCharactersCubit, FetchCharactersState>(
         builder: (context, state) {
       controlScroll(context);
       if (state is LoadingCharacters && state.isFirstFetch) {
-        return _loadIndicator();
+        return const Loader();
       }
       if (state is LoadingCharacters) {
         isLoading = true;
@@ -74,7 +67,7 @@ class GalleryList extends StatelessWidget {
                   const Duration(milliseconds: 30),
                   () => scrollController
                       .jumpTo(scrollController.position.maxScrollExtent));
-              return _loadIndicator();
+              return const Loader();
             }
           },
           separatorBuilder: (context, i) =>
