@@ -7,7 +7,7 @@ class Location extends LocationEntity {
     return Location(name: json['name'], url: json['url']);
   }
 
-  Map<String, dynamic> toJson(Location loc) {
-    return {'name': loc.name, 'url': loc.url};
+  Map<String, dynamic> toJson() {
+    return {'name': name, 'url': url};
   }
 }

@@ -2,8 +2,9 @@ import 'package:rick_and_morty/feature/data/models/location.dart';
 import 'package:rick_and_morty/feature/domain/entities/character.dart';
 
 class Character extends CharacterEntity {
-  Character(
+  const Character(
       {required id,
+      required status,
       required name,
       required species,
       required type,
@@ -11,11 +12,12 @@ class Character extends CharacterEntity {
       required origin,
       required location,
       required image,
-      required episode,
+      // required episode,
       required url,
       required created})
       : super(
           id: id,
+          status: status,
           name: name,
           species: species,
           type: type,
@@ -23,7 +25,7 @@ class Character extends CharacterEntity {
           origin: origin,
           location: location,
           image: image,
-          episode: episode,
+          // episode: episode,
           url: url,
           created: created,
         );
@@ -31,6 +33,7 @@ class Character extends CharacterEntity {
   factory Character.fromJson(Map<String, dynamic> json) {
     return Character(
         id: json['id'],
+        status: json['status'],
         name: json['name'],
         species: json['species'],
         type: json['type'],
@@ -41,24 +44,25 @@ class Character extends CharacterEntity {
             ? Location.fromJson(json['location'])
             : null,
         image: json['image'],
-        episode: (json['episode'] as List<dynamic>).map((el) => el as String),
+        // episode: (json['episode'] as List<dynamic>).map((el) => el as String),
         url: json['url'],
-        created: DateTime.parse(json['created']) as String);
+        created: json['created']);
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'status': status,
       'name': name,
       'species': species,
       'type': type,
       'gender': gender,
-      'origin': origin,
-      'location': location,
+      'origin': Location(name: origin.name, url: origin.url).toJson(),
+      'location': Location(name: location.name, url: location.url).toJson(),
       'image': image,
-      'episode': episode,
+      // 'episode': episode,
       'url': url,
-      'created': created.toIso8601String()
+      'created': created
     };
   }
 }

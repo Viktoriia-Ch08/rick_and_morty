@@ -10,9 +10,10 @@ class CharacterEntity extends Equatable {
   final LocationEntity origin;
   final LocationEntity location;
   final String image;
-  final List<String> episode;
+  // final Map<dynamic, String> episode;
   final String url;
-  final DateTime created;
+  final String created;
+  final String status;
 
   const CharacterEntity(
       {required this.id,
@@ -23,9 +24,10 @@ class CharacterEntity extends Equatable {
       required this.origin,
       required this.location,
       required this.image,
-      required this.episode,
+      // required this.episode,
       required this.url,
-      required this.created});
+      required this.created,
+      required this.status});
 
   @override
   List<Object> get props => [
@@ -37,8 +39,9 @@ class CharacterEntity extends Equatable {
         origin,
         location,
         image,
-        episode,
+        // episode,
         url,
         created,
+        status
       ];
 }

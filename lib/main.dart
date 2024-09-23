@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rick_and_morty/constants/colors_constants.dart';
 import 'package:rick_and_morty/feature/presentation/bloc/cubit/fetch_characters_cubit.dart';
 import 'package:rick_and_morty/feature/presentation/bloc/search_bloc/search_bloc.dart';
 import 'package:rick_and_morty/locator_service.dart' as di;
@@ -20,13 +21,13 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider<FetchCharactersCubit>(
-              create: (context) => ls<FetchCharactersCubit>()),
-          BlocProvider<SearchBloc>(create: (context) => ls<SearchBloc>())
+              create: (context) => sl<FetchCharactersCubit>()..load()),
+          BlocProvider<SearchBloc>(create: (context) => sl<SearchBloc>())
         ],
         child: MaterialApp(
-            title: 'Flutter Demo',
             theme: ThemeData(
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+                scaffoldBackgroundColor: ColorsConstants.darkPurpleColor
             ),
             home: const Gallery()));
   }

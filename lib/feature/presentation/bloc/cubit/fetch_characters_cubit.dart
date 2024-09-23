@@ -23,14 +23,17 @@ class FetchCharactersCubit extends Cubit<FetchCharactersState> {
 
     emit(LoadingCharacters(
         oldCharacters: oldCharacters, isFirstFetch: page == 1));
-
     final failureOrCharacters =
         await fetchCharacters(CharactersPageParam(page: page));
 
-    failureOrCharacters.fold((failure) => _mapFailure(failure), (characters) {
-      page++;
+    failureOrCharacters.fold(
+        (failure) => emit(ErrorFetchCharacters(message: _mapFailure(failure))),
+        (characters) {
+      page += 1;
       final allCharacters = (state as LoadingCharacters).oldCharacters;
+     
       allCharacters.addAll(characters);
+      
       emit(LoadedCharacters(characters: allCharacters));
     });
   }
