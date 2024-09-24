@@ -7,7 +7,7 @@ class ColorsConstants {
   static const Color whiteColor = Color.fromARGB(255, 255, 255, 255);
   static const Color redColor = Color.fromARGB(255, 183, 24, 24);
   static const Color pinkColor = Color.fromARGB(255, 212, 15, 124);
-  static const Color greyColor = Color.fromARGB(255, 86, 85, 85);
+  static const Color greyColor = Color.fromARGB(255, 60, 58, 58);
   static const Color whiteColorTransp = Color.fromARGB(200, 255, 255, 255);
   static const Color greenColor = Color.fromARGB(255, 12, 185, 15);
   static const Color lightBlueColor = Color.fromARGB(255, 97, 210, 255);
