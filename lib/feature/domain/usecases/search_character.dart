@@ -13,14 +13,15 @@ class SearchCharacter
 
   Future<Either<Failure, List<CharacterEntity>>> call(
       CharacterQueryParam params) async {
-    return await characterRep.searchCharacter(params.query);
+    return await characterRep.searchCharacter(params.query, params.page);
   }
 }
 
 class CharacterQueryParam extends Equatable {
   final String query;
+  final int page;
 
-  const CharacterQueryParam({required this.query});
+  const CharacterQueryParam({required this.query, required this.page});
 
   @override
   List<Object> get props => [query];

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty/constants/colors_constants.dart';
@@ -11,11 +13,24 @@ import 'package:rick_and_morty/widgets/loader.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
   final _suggestions = ['Rick', 'Morty', 'Beth'];
+  final scrollController = ScrollController();
 
   Widget _showError(String message) {
     return Center(
       child: Text(message),
     );
+  }
+
+  void controlScroll(BuildContext context, String query) {
+    scrollController.addListener(() {
+      if (scrollController.position.atEdge) {
+        if (scrollController.position != 0) {
+          context
+              .read<SearchBloc>()
+              .add(SearchCharacterEvent(characterQuery: query));
+        }
+      }
+    });
   }
 
   @override
@@ -72,11 +87,20 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
+    List<CharacterEntity> characters = [];
+    bool isLoading = false;
+
     BlocProvider.of<SearchBloc>(context)
         .add(SearchCharacterEvent(characterQuery: query));
+
     return BlocBuilder<SearchBloc, SearchState>(builder: (context, state) {
-      if (state is LoadingSearchCharacters) {
+      controlScroll(context, query);
+      if (state is LoadingSearchCharacters && state.isFirstFetch) {
         return const Loader();
+      }
+      if (state is LoadingSearchCharacters) {
+        isLoading = true;
+        characters = state.oldCharacters;
       }
 
       if (state is ErrorLoadingSearchCharacters) {
@@ -87,8 +111,6 @@ class CustomSearchDelegate extends SearchDelegate {
         return _showError('No characters with this name found');
       }
 
-      List<CharacterEntity> characters = [];
-
       if (state is LoadedSearchCharacters) {
         characters = state.characters;
         if (characters.isEmpty) {
@@ -97,42 +119,57 @@ class CustomSearchDelegate extends SearchDelegate {
       }
 
       return ListView.separated(
-        itemBuilder: (context, i) => GestureDetector(
-          onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) =>
-                    CharacterDetails(character: characters[i])));
-          },
-          child: Container(
-            margin: const EdgeInsets.all(20),
-            child: Stack(children: [
-              CachedImage(
-                  url: characters[i].image,
-                  width: double.infinity,
-                  height: 170),
-              Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                      width: 80,
-                      decoration: BoxDecoration(
-                          color: ColorsConstants.blackColor.withOpacity(0.5),
-                          borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(15),
-                              bottomRight: Radius.circular(15))),
-                      child: Text(
-                        characters[i].name,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                            color: ColorsConstants.whiteColorTransp,
-                            fontWeight: FontWeight.bold),
-                      )))
-            ]),
-          ),
-        ),
+        controller: scrollController,
+        itemBuilder: (context, i) {
+          if (i < characters.length) {
+            return GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>
+                        CharacterDetails(character: characters[i])));
+              },
+              child: Container(
+                margin: const EdgeInsets.all(20),
+                child: Stack(children: [
+                  CachedImage(
+                      url: characters[i].image,
+                      width: double.infinity,
+                      height: 170),
+                  Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                          width: 80,
+                          decoration: BoxDecoration(
+                              color:
+                                  ColorsConstants.blackColor.withOpacity(0.5),
+                              borderRadius: const BorderRadius.only(
+                                  bottomLeft: Radius.circular(15),
+                                  bottomRight: Radius.circular(15))),
+                          child: Text(
+                            characters[i].name,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .copyWith(
+                                    color: ColorsConstants.whiteColorTransp,
+                                    fontWeight: FontWeight.bold),
+                          )))
+                ]),
+              ),
+            );
+          } else {
+            Timer(
+                const Duration(milliseconds: 30),
+                () => scrollController
+                    .jumpTo(scrollController.position.maxScrollExtent));
+            return const Loader();
+          }
+        },
         separatorBuilder: (context, index) => const Divider(),
-        itemCount: characters.length,
+        itemCount: characters.length + (isLoading ? 1 : 0),
       );
     });
   }

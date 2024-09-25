@@ -25,8 +25,9 @@ class CharactersRepository implements CharacterRep {
   }
 
   @override
-  Future<Either<Failure, List<CharacterEntity>>> searchCharacter(String query) {
-    return _getCharacters(() => remoteSource.searchCharacter(query));
+  Future<Either<Failure, List<CharacterEntity>>> searchCharacter(
+      String query, int page) {
+    return _getCharacters(() => remoteSource.searchCharacter(query, page));
   }
 
   Future<Either<Failure, List<Character>>> _getCharacters(

@@ -10,7 +10,16 @@ abstract class SearchState extends Equatable {
 
 class EmptySearchCharacters extends SearchState {}
 
-class LoadingSearchCharacters extends SearchState {}
+class LoadingSearchCharacters extends SearchState {
+  final List<CharacterEntity> oldCharacters;
+  final bool isFirstFetch;
+
+  const LoadingSearchCharacters(
+      {required this.oldCharacters, this.isFirstFetch = false});
+
+  @override
+  List<Object> get props => [oldCharacters];
+}
 
 class LoadedSearchCharacters extends SearchState {
   final List<CharacterEntity> characters;

@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 abstract class CharactersRemoteSource {
   Future<List<Character>> getAllCharacters(int page);
-  Future<List<Character>> searchCharacter(String query);
+  Future<List<Character>> searchCharacter(String query, int page);
 }
 
 class CharactersRemoteSourceImpl implements CharactersRemoteSource {
@@ -19,17 +19,17 @@ class CharactersRemoteSourceImpl implements CharactersRemoteSource {
       'https://rickandmortyapi.com/api/character/?page=$page');
 
   @override
-  Future<List<Character>> searchCharacter(String query) => _getCharacterFromUrl(
-      'https://rickandmortyapi.com/api/character/?name=$query');
+  Future<List<Character>> searchCharacter(String query, int page) =>
+      _getCharacterFromUrl(
+          'https://rickandmortyapi.com/api/character/?name=$query&page=$page');
 
   Future<List<Character>> _getCharacterFromUrl(String url) async {
     final parsedUrl = Uri.parse(url);
     final contentType = {'Content-Type': 'application/json'};
     final res = await client.get(parsedUrl, headers: contentType);
+    final data = json.decode(res.body);
 
     if (res.statusCode == 200) {
-      final data = json.decode(res.body);
-
       return (data['results'] as List)
           .map((character) => Character.fromJson(character))
           .toList();
